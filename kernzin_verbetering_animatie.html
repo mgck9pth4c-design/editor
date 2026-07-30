@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Vloeiende tekstanimatie</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 34px;
+}
+
+.sentence {
+    color: black;
+    line-height: 1.4;
+}
+
+.word {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: bottom;
+
+    width: var(--w);
+
+    transition:
+        width 0.9s ease,
+        color 0.7s ease,
+        opacity 0.6s ease;
+}
+
+.highlight {
+    color: #d40000;
+}
+
+.replace {
+    color: #0a9d32;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sentence">
+    In verschillende onderzoeken wordt aangehaald dat
+    <span id="target" class="word">het</span>
+    de stress vermindert.
+</div>
+
+<script>
+
+const target = document.getElementById("target");
+
+function animateSentence() {
+
+    // Beginstaat
+    target.className = "word";
+    target.style.setProperty("--w", "48px");
+    target.style.opacity = "1";
+    target.textContent = "het";
+
+    // Stap 1: "het" wordt rood
+    setTimeout(() => {
+        target.classList.add("highlight");
+    }, 1000);
+
+    // Stap 2: "het" verdwijnt en maakt tijdelijk ruimte
+    setTimeout(() => {
+        target.style.opacity = "0";
+        target.style.setProperty("--w", "285px");
+    }, 2200);
+
+    // Stap 3: vervangen door "telethuiswerken"
+    setTimeout(() => {
+        target.textContent = "telethuiswerken";
+        target.className = "word replace";
+        target.style.opacity = "1";
+
+        // Overtollige ruimte verwijderen
+        setTimeout(() => {
+            target.style.setProperty("--w", "235px");
+        }, 50);
+
+    }, 3200);
+}
+
+// Eerste uitvoering
+animateSentence();
+
+// Herhalen
+setInterval(animateSentence, 6000);
+
+</script>
+
+</body>
+</html>
