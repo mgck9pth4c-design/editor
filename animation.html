@@ -13,7 +13,30 @@ body{
     font-family:Arial, Helvetica, sans-serif;
     font-size:18px;
     line-height:1.8;
-    text-align: justify;
+    text-align:justify;
+}
+
+#toggleKnop{
+    font-size:28px;
+    padding:8px 16px;
+    margin-bottom:25px;
+    cursor:pointer;
+    border:1px solid #bbb;
+    border-radius:8px;
+    background:white;
+}
+
+#toggleKnop:hover{
+    background:#f3f3f3;
+}
+
+#pijl{
+    display:inline-block;
+    transition:transform .3s ease;
+}
+
+#pijl.gedraaid{
+    transform:rotate(180deg);
 }
 
 #tekst{
@@ -32,44 +55,54 @@ p{
 <body>
 
 <div id="tekst"></div>
+<br>
+<button id="toggleKnop" aria-label="Wissel weergave">
+    <span id="pijl">→</span>
+</button>
 
 <script>
 
 const zonder =
-`De vorming van de Rwandese staat was het gevolg van de langzame uitbreiding van een centraal gebied dat het ‘oude Rwanda’ wordt genoemd. Dit proces vond plaats in de 18de en 19de eeuw. De centrale staat werd gekenmerkt door een hoge mate van organisatie, waarin de koning en zijn adviseurs over alle belangrijke zaken een beslissing namen. Deze binnenste cirkel van de macht bestond steeds uit een kleine groep Tutsi’s. De grote meerderheid van de Tutsi’s en Hutu’s had geen toegang tot macht of voorrechten. De komst van het Belgische kolonialisme zorgde voor verstrekkende veranderingen in Rwanda. Kenmerkend voor het tijdperk van het Belgisch kolonialisme is dat de Belgen zich actief inmengden in het bestuur van de kolonie. Om hun gezag te laten gelden, voerden de Belgen een verdeel- en- heersstrategie. De Tutsi-minderheid werd omgevormd tot een Tutsi-elite die de Hutu-meerderheid onder aanmoediging van het koloniale gezag op wrede wijze onderdrukte. Tussen 1959 en 1964 vond er echter een politieke revolutie plaats waarbij de Hutu’s de macht uit handen namen van de Tutsi-elite. Hierbij werden duizenden Tutsi-burgers weggedreven uit hun huizen en moesten ze vluchten naar de buurlanden. De komst van Habyarimana zorgde opnieuw voor politieke verandering in Rwanda. In 1973 pleegde Habyarimana, de toenmalige minister van defensie, een staatsgreep. Hij consolideerde zijn macht tussen 1974 en 1976; daarna werd hij elke 5 jaar herkozen tot president. De periode tot 1994 werd gekenmerkt door een minder intense burgeroorlog en lopende vredesonderhandelingen. Toen op 6 april 1994 het vliegtuig van president Habyarimana werd neergeschoten door raketten, volgde er echter een politieke omslag. De Hutu-extremisten uit Habyarimana’s regime startten onmiddellijk na zijn dood een massamoord. Tussen april en juli 1994 verloren ten minste 800 000 Rwandezen hun leven tijdens de genocide.`;
+`De vorming van de Rwandese staat was het gevolg van de langzame uitbreiding van een centraal gebied dat het ‘oude Rwanda’ wordt genoemd. Dit proces vond plaats in de 18de en 19de eeuw. De centrale staat werd gekenmerkt door een hoge mate van organisatie, waarin de koning en zijn adviseurs over alle belangrijke zaken een beslissing namen. Deze binnenste cirkel van de macht bestond steeds uit een kleine groep Tutsi’s. De grote meerderheid van de Tutsi’s en Hutu’s had geen toegang tot macht of voorrechten. De komst van het Belgische kolonialisme zorgde voor verstrekkende veranderingen in Rwanda. Kenmerkend voor het tijdperk van het Belgisch kolonialisme is dat de Belgen zich actief inmengden in het bestuur van de kolonie. Om hun gezag te laten gelden, voerden de Belgen een verdeel-en-heersstrategie. De Tutsi-minderheid werd omgevormd tot een Tutsi-elite die de Hutu-meerderheid onder aanmoediging van het koloniale gezag op wrede wijze onderdrukte. Tussen 1959 en 1964 vond er echter een politieke revolutie plaats waarbij de Hutu’s de macht uit handen namen van de Tutsi-elite. Hierbij werden duizenden Tutsi-burgers weggedreven uit hun huizen en moesten ze vluchten naar de buurlanden. De komst van Habyarimana zorgde opnieuw voor politieke verandering in Rwanda. In 1973 pleegde Habyarimana, de toenmalige minister van defensie, een staatsgreep. Hij consolideerde zijn macht tussen 1974 en 1976; daarna werd hij elke 5 jaar herkozen tot president. De periode tot 1994 werd gekenmerkt door een minder intense burgeroorlog en lopende vredesonderhandelingen. Toen op 6 april 1994 het vliegtuig van president Habyarimana werd neergeschoten door raketten, volgde er echter een politieke omslag. De Hutu-extremisten uit Habyarimana’s regime startten onmiddellijk na zijn dood een massamoord. Tussen april en juli 1994 verloren ten minste 800 000 Rwandezen hun leven tijdens de genocide.`;
 
-const met =`
+const met =
+`
 <p>De vorming van de Rwandese staat was het gevolg van de langzame uitbreiding van een centraal gebied dat het ‘oude Rwanda’ wordt genoemd. Dit proces vond plaats in de 18de en 19de eeuw. De centrale staat werd gekenmerkt door een hoge mate van organisatie, waarin de koning en zijn adviseurs over alle belangrijke zaken een beslissing namen. Deze binnenste cirkel van de macht bestond steeds uit een kleine groep Tutsi’s. De grote meerderheid van de Tutsi’s en Hutu’s had geen toegang tot macht of voorrechten.</p>
 
-<p>De komst van het Belgische kolonialisme zorgde voor verstrekkende veranderingen in Rwanda. Kenmerkend voor het tijdperk van het Belgisch kolonialisme is dat de Belgen zich actief inmengden in het bestuur van de kolonie. Om hun gezag te laten gelden, voerden de Belgen een verdeel- en- heersstrategie. De Tutsi-minderheid werd omgevormd tot een Tutsi-elite die de Hutu-meerderheid onder aanmoediging van het koloniale gezag op wrede wijze onderdrukte. Tussen 1959 en 1964 vond er echter een politieke revolutie plaats waarbij de Hutu’s de macht uit handen namen van de Tutsi-elite. Hierbij werden duizenden Tutsi-burgers weggedreven uit hun huizen en moesten ze vluchten naar de buurlanden.</p>
+<p>De komst van het Belgische kolonialisme zorgde voor verstrekkende veranderingen in Rwanda. Kenmerkend voor het tijdperk van het Belgisch kolonialisme is dat de Belgen zich actief inmengden in het bestuur van de kolonie. Om hun gezag te laten gelden, voerden de Belgen een verdeel-en-heersstrategie. De Tutsi-minderheid werd omgevormd tot een Tutsi-elite die de Hutu-meerderheid onder aanmoediging van het koloniale gezag op wrede wijze onderdrukte. Tussen 1959 en 1964 vond er echter een politieke revolutie plaats waarbij de Hutu’s de macht uit handen namen van de Tutsi-elite. Hierbij werden duizenden Tutsi-burgers weggedreven uit hun huizen en moesten ze vluchten naar de buurlanden.</p>
 
 <p>De komst van Habyarimana zorgde opnieuw voor politieke verandering in Rwanda. In 1973 pleegde Habyarimana, de toenmalige minister van defensie, een staatsgreep. Hij consolideerde zijn macht tussen 1974 en 1976; daarna werd hij elke 5 jaar herkozen tot president. De periode tot 1994 werd gekenmerkt door een minder intense burgeroorlog en lopende vredesonderhandelingen. Toen op 6 april 1994 het vliegtuig van president Habyarimana werd neergeschoten door raketten, volgde er echter een politieke omslag. De Hutu-extremisten uit Habyarimana’s regime startten onmiddellijk na zijn dood een massamoord. Tussen april en juli 1994 verloren ten minste 800 000 Rwandezen hun leven tijdens de genocide.</p>
-
 `;
 
 const tekst = document.getElementById("tekst");
+const knop = document.getElementById("toggleKnop");
+const pijl = document.getElementById("pijl");
 
 let alinea = false;
 
-function toon(){
+// Begin met de tekst zonder alinea's
+tekst.innerHTML = zonder;
+
+knop.addEventListener("click", () => {
 
     tekst.style.opacity = 0;
 
     setTimeout(() => {
 
-        tekst.innerHTML = alinea ? met : zonder;
+        if(alinea){
+            tekst.innerHTML = zonder;
+            pijl.classList.remove("gedraaid");
+        }else{
+            tekst.innerHTML = met;
+            pijl.classList.add("gedraaid");
+        }
 
         tekst.style.opacity = 1;
-
         alinea = !alinea;
 
-    }, 400);
+    },400);
 
-}
-
-toon();
-
-setInterval(toon,3500);
+});
 
 </script>
 
