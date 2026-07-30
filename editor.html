@@ -2,28 +2,52 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Tekstbewerker</title>
 
 <style>
+
 body{
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:Arial,Helvetica,sans-serif;
     margin:30px;
     max-width:900px;
 }
 
-.toolbar{
-    margin-bottom:15px;
+.tabs{
+    display:flex;
+    border-bottom:2px solid #ccc;
+    margin-bottom:20px;
+}
+
+.tab{
+    padding:10px 20px;
+    cursor:pointer;
+    border:1px solid #ccc;
+    border-bottom:none;
+    background:#f2f2f2;
+    margin-right:5px;
+}
+
+.tab.active{
+    background:white;
+    font-weight:bold;
+}
+
+.panel{
+    display:none;
+}
+
+.panel.active{
+    display:block;
 }
 
 button{
     padding:8px 16px;
-    font-size:15px;
-    cursor:pointer;
+    margin-bottom:15px;
 }
 
-#editor{
+.editor{
     border:1px solid #bbb;
     min-height:350px;
     padding:18px;
@@ -32,55 +56,118 @@ button{
     outline:none;
 }
 
+.solution{
+    border:1px solid #bbb;
+    background:#fafafa;
+    min-height:350px;
+    padding:18px;
+    line-height:1.6;
+    font-size:17px;
+}
+
 #status{
     margin-top:12px;
     color:#666;
-    font-size:14px;
 }
+
 </style>
 
 </head>
 
 <body>
 
-<div class="toolbar">
-    <button onclick="resetTekst()">Reset tekst</button>
+<div class="tabs">
+    <div class="tab active" onclick="toonTab('opdracht')">
+        ✏️ Editor
+    </div>
+
+    <div class="tab" onclick="toonTab('oplossing')">
+        📄 Voorbeeldoplossing
+    </div>
 </div>
 
-<div id="editor" contenteditable="true">
+<div id="opdracht" class="panel active">
+
+<button onclick="resetTekst()">Reset tekst</button>
+
+<div id="editor" class="editor" contenteditable="true">
+
 <p>De vorming van de Rwandese staat was het gevolg van de langzame uitbreiding van een centraal gebied dat het ‘oude Rwanda’ wordt genoemd. Dit proces vond plaats in de 18de en 19de eeuw. De centrale staat werd gekenmerkt door een hoge mate van organisatie, waarin de koning en zijn adviseurs over alle belangrijke zaken een beslissing namen. Deze binnenste cirkel van de macht bestond steeds uit een kleine groep Tutsi’s. De grote meerderheid van de Tutsi’s en Hutu’s had geen toegang tot macht of voorrechten. De komst van het Belgische kolonialisme zorgde voor verstrekkende veranderingen in Rwanda. Kenmerkend voor het tijdperk van het Belgisch kolonialisme is dat de Belgen zich actief inmengden in het bestuur van de kolonie. Om hun gezag te laten gelden, voerden de Belgen een verdeel- en- heersstrategie. De Tutsi-minderheid werd omgevormd tot een Tutsi-elite die de Hutu-meerderheid onder aanmoediging van het koloniale gezag op wrede wijze onderdrukte. Tussen 1959 en 1964 vond er echter een politieke revolutie plaats waarbij de Hutu’s de macht uit handen namen van de Tutsi-elite. Hierbij werden duizenden Tutsi-burgers weggedreven uit hun huizen en moesten ze vluchten naar de buurlanden. De komst van Habyarimana zorgde opnieuw voor politieke verandering in Rwanda. In 1973 pleegde Habyarimana, de toenmalige minister van defensie, een staatsgreep. Hij consolideerde zijn macht tussen 1974 en 1976; daarna werd hij elke 5 jaar herkozen tot president. De periode tot 1994 werd gekenmerkt door een minder intense burgeroorlog en lopende vredesonderhandelingen. Toen op 6 april 1994 het vliegtuig van president Habyarimana werd neergeschoten door raketten, volgde er echter een politieke omslag. De Hutu-extremisten uit Habyarimana’s regime startten onmiddellijk na zijn dood een massamoord. Tussen april en juli 1994 verloren ten minste 800 000 Rwandezen hun leven tijdens de genocide.
 </p>
+
 </div>
 
 <div id="status">
-Woorden: <span id="woorden">0</span>
+Woorden:
+<span id="woorden">0</span>
+</div>
+
+</div>
+
+<div id="oplossing" class="panel">
+
+<div class="solution">
+
+<p>
+    De vorming van de Rwandese staat was het gevolg van de langzame uitbreiding van een centraal gebied dat het ‘oude Rwanda’ wordt genoemd. Dit proces vond plaats in de 18de en 19de eeuw. De centrale staat werd gekenmerkt door een hoge mate van organisatie, waarin de koning en zijn adviseurs over alle belangrijke zaken een beslissing namen. Deze binnenste cirkel van de macht bestond steeds uit een kleine groep Tutsi’s. De grote meerderheid van de Tutsi’s en Hutu’s had geen toegang tot macht of voorrechten.
+</p>
+<p>
+    De komst van het Belgische kolonialisme zorgde voor verstrekkende veranderingen in Rwanda. Kenmerkend voor het tijdperk van het Belgisch kolonialisme is dat de Belgen zich actief inmengden in het bestuur van de kolonie. Om hun gezag te laten gelden, voerden de Belgen een verdeel- en- heersstrategie. De Tutsi-minderheid werd omgevormd tot een Tutsi-elite die de Hutu-meerderheid onder aanmoediging van het koloniale gezag op wrede wijze onderdrukte. Tussen 1959 en 1964 vond er echter een politieke revolutie plaats waarbij de Hutu’s de macht uit handen namen van de Tutsi-elite. Hierbij werden duizenden Tutsi-burgers weggedreven uit hun huizen en moesten ze vluchten naar de buurlanden.
+</p>
+<p>
+    De komst van Habyarimana zorgde opnieuw voor politieke verandering in Rwanda. In 1973 pleegde Habyarimana, de toenmalige minister van defensie, een staatsgreep. Hij consolideerde zijn macht tussen 1974 en 1976; daarna werd hij elke 5 jaar herkozen tot president. De periode tot 1994 werd gekenmerkt door een minder intense burgeroorlog en lopende vredesonderhandelingen. Toen op 6 april 1994 het vliegtuig van president Habyarimana werd neergeschoten door raketten, volgde er echter een politieke omslag. De Hutu-extremisten uit Habyarimana’s regime startten onmiddellijk na zijn dood een massamoord. Tussen april en juli 1994 verloren ten minste 800 000 Rwandezen hun leven tijdens de genocide.
+</p>
+
+</div>
+
 </div>
 
 <script>
 
-const editor = document.getElementById("editor");
-const origineleTekst = editor.innerHTML;
+const editor=document.getElementById("editor");
+const origineleTekst=editor.innerHTML;
 
-function updateWoorden() {
-    const tekst = editor.innerText.trim();
+function updateWoorden(){
 
-    const aantal = tekst === ""
-        ? 0
-        : tekst.split(/\s+/).length;
+    const tekst=editor.innerText.trim();
 
-    document.getElementById("woorden").textContent = aantal;
+    const aantal=tekst===""
+        ?0
+        :tekst.split(/\s+/).length;
+
+    document.getElementById("woorden").textContent=aantal;
+
 }
 
-editor.addEventListener("input", updateWoorden);
-
-function resetTekst() {
-    if (confirm("De oorspronkelijke tekst terugzetten?")) {
-        editor.innerHTML = origineleTekst;
-        updateWoorden();
-    }
-}
+editor.addEventListener("input",updateWoorden);
 
 updateWoorden();
+
+function resetTekst(){
+
+    if(confirm("De oorspronkelijke tekst terugzetten?")){
+
+        editor.innerHTML=origineleTekst;
+        updateWoorden();
+
+    }
+
+}
+
+function toonTab(id){
+
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+
+    document.getElementById(id).classList.add("active");
+
+    if(id==="opdracht"){
+        document.querySelectorAll(".tab")[0].classList.add("active");
+    }else{
+        document.querySelectorAll(".tab")[1].classList.add("active");
+    }
+
+}
 
 </script>
 
