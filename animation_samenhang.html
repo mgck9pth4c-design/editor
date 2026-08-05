@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Visualisatie alinea's</title>
+
+<style>
+
+body{
+    margin:40px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:18px;
+    line-height:1.8;
+    text-align:justify;
+}
+
+#toggleKnop{
+    font-size:28px;
+    padding:8px 16px;
+    margin-bottom:25px;
+    cursor:pointer;
+    border:1px solid #bbb;
+    border-radius:8px;
+    background:white;
+}
+
+#toggleKnop:hover{
+    background:#f3f3f3;
+}
+
+#pijl{
+    display:inline-block;
+    transition:transform .3s ease;
+}
+
+#pijl.gedraaid{
+    transform:rotate(180deg);
+}
+
+#tekst{
+    max-width:850px;
+    transition:opacity .8s ease;
+}
+
+p{
+    margin:0 0 1.2em 0;
+}
+
+#ref{
+    font-size: 10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="tekst"></div>
+
+<button id="toggleKnop" aria-label="Wissel weergave">
+    <span id="pijl">→</span>
+</button>
+
+<script>
+
+const zonder =
+`<p>
+    Er kunnen drie vormen van telewerken onderscheiden worden. Wie mobiel werkt, werkt onderweg of op een variabele locatie. Eilandwerken gaat om mensen die samenwerken op een speciaal ingericht kantoor dicht bij huis. Telethuiswerken is werk waarbij de werkplek het eigen huis is. Een gedeelte van het huis is doorgaans als kantoor ingericht. De  werk- en de privésfeer blijven in zekere mate gescheiden.
+</p>`;
+
+const met =
+`
+<p>
+    Er kunnen drie vormen van telewerken onderscheiden worden. De <b>eerste</b> soort is mobiel werken. Wie mobiel werkt, werkt onderweg of op een variabele locatie. De <b>tweede</b> soort is het zogeheten eilandwerken. <b>Hier</b> gaat het om mensen die samenwerken op een speciaal ingericht kantoor dicht bij huis. De <b>laatste</b> soort is het telethuiswerken, <b>waarbij</b> de werkplek het eigen huis is. In dit geval is een gedeelte van het huis doorgaans als kantoor ingericht, <b>zodat</b> de werk- en de privésfeer in zekere mate gescheiden blijven.
+</p>
+`;
+
+const tekst = document.getElementById("tekst");
+const knop = document.getElementById("toggleKnop");
+const pijl = document.getElementById("pijl");
+
+let alinea = false;
+
+// Begin met de tekst zonder alinea's
+tekst.innerHTML = zonder;
+
+knop.addEventListener("click", () => {
+
+    tekst.style.opacity = 0;
+
+    setTimeout(() => {
+
+        if(alinea){
+            tekst.innerHTML = zonder;
+            pijl.classList.remove("gedraaid");
+        }else{
+            tekst.innerHTML = met;
+            pijl.classList.add("gedraaid");
+        }
+
+        tekst.style.opacity = 1;
+        alinea = !alinea;
+
+    },400);
+
+});
+
+</script>
+
+</body>
+</html>
