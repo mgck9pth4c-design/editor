@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tekstversies</title>
+
+<style>
+
+body{
+    margin:40px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:18px;
+    line-height:1.8;
+    text-align:justify;
+}
+
+#tekst{
+    max-width:850px;
+    transition:opacity .5s ease;
+}
+
+p{
+    margin:0 0 1.2em 0;
+}
+
+.knoppen{
+    margin-top:30px;
+}
+
+button{
+    font-size:18px;
+    padding:10px 18px;
+    margin-right:15px;
+    cursor:pointer;
+    border:1px solid #bbb;
+    border-radius:8px;
+    background:white;
+}
+
+button:hover{
+    background:#f2f2f2;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<div id="tekst"></div>
+
+
+<div class="knoppen" id="knoppen"></div>
+
+
+<script>
+
+
+const versie1 = `
+<p>
+<b>Alcoholmisbruik</b> kan leiden tot <b>sociale problemen</b>.
+</p>
+`;
+
+
+const versie2 = `
+<p>
+<b>Alcoholmisbruik</b> kan leiden tot <b>sociale problemen</b>. Enerzijds uit deze impact zich in de <b>persoonlijke en relationele sfeer</b> van de individuele gebruiker. Zo kan overmatig alcoholgebruik de communicatie binnen een gezin ernstig verstoren, wat regelmatig leidt tot relationele spanningen en in het slechtste geval familiaal geweld. Anderzijds reiken de gevolgen verder dan de privésfeer en veroorzaakt misbruik ook aanzienlijke schade <b>op maatschappelijk en professioneel niveau</b>. Op de werkplek kan een structurele alcoholverslaving bijvoorbeeld leiden tot een daling van de productiviteit, een verhoogd ziekteverzuim en uiteindelijk zelfs tot baanverlies. Bovendien veroorzaakt overmatig alcoholgebruik regelmatig overlast <b>in de openbare ruimte</b>, onder meer via verkeersongevallen onder invloed en incidenten met agressie.
+</p>
+`;
+
+
+const versie3 = `
+<p>
+<b>Alcoholmisbruik</b> kan leiden tot <b>sociale problemen</b>. Dat kan enerzijds al het geval zijn bij <b>occasioneel overmatig drinken</b> wanneer het leidt tot acute sociale incidenten zoals een ruzie of een misstap op het werk. Epidemiologisch onderzoek wijst anderzijds uit dat de kans op sociale ontwrichting ten gevolge van alcoholmisbruik aanzienlijk toeneemt naarmate het consumptiepatroon ernstiger wordt. Bij name bij personen die voldoen aan de criteria voor een <b>stoornis in het alcoholgebruik</b> is de waarschijnlijkheid van relationele conflicten, werkgerelateerd verzuim en financiële instabiliteit bijzonder hoog. De kans op structurele sociale problematiek stijgt nog verder naarmate de duur en de intensiteit van de alcoholafhankelijkheid.
+</p>
+`;
+
+
+const tekst = document.getElementById("tekst");
+const knoppen = document.getElementById("knoppen");
+
+
+// Starttoestand
+
+toonVersie1();
+
+
+function veranderTekst(nieuweTekst){
+
+    tekst.style.opacity = 0;
+
+    setTimeout(() => {
+
+        tekst.innerHTML = nieuweTekst;
+        tekst.style.opacity = 1;
+
+    },300);
+
+}
+
+
+
+function toonVersie1(){
+
+    veranderTekst(versie1);
+
+    knoppen.innerHTML = `
+        <button onclick="toonVersie2()">→ In welke omgevingen spelen deze sociale problemen zich af?</button>
+        <br>
+        <br>
+        <button onclick="toonVersie3()">→ Wat beïnvloedt de kans op sociale problemen?</button>
+    `;
+}
+
+
+
+function toonVersie2(){
+
+    veranderTekst(versie2);
+
+    knoppen.innerHTML = `
+        <button onclick="toonVersie1()">← Terug</button>
+    `;
+
+}
+
+
+
+function toonVersie3(){
+
+    veranderTekst(versie3);
+
+    knoppen.innerHTML = `
+        <button onclick="toonVersie1()">← Terug</button>
+    `;
+
+}
+
+
+</script>
+
+
+</body>
+</html>
