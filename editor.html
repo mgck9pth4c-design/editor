@@ -72,6 +72,10 @@ button{
     color:#666;
 }
 
+#ref{
+    font-size: 10px;
+}
+
 </style>
 
 </head>
@@ -98,9 +102,10 @@ button{
 
 </div>
 
-<div id="status">
-Woorden:
-<span id="woorden">0</span>
+<div id="ref">
+    <p>
+        Naar: <i>Jongerentaal bevat minder Engels dan we denken, ontdekte Melissa Schuring</i> (www.eoswetenschap.eu, 2026)
+    </p>
 </div>
 
 </div>
@@ -121,6 +126,12 @@ Woorden:
 
 </div>
 
+<div id="ref">
+    <p>
+        Naar: <i>Jongerentaal bevat minder Engels dan we denken, ontdekte Melissa Schuring</i> (www.eoswetenschap.eu, 2026)
+    </p>
+</div>
+
 </div>
 
 <script>
@@ -128,21 +139,6 @@ Woorden:
 const editor=document.getElementById("editor");
 const origineleTekst=editor.innerHTML;
 
-function updateWoorden(){
-
-    const tekst=editor.innerText.trim();
-
-    const aantal=tekst===""
-        ?0
-        :tekst.split(/\s+/).length;
-
-    document.getElementById("woorden").textContent=aantal;
-
-}
-
-editor.addEventListener("input",updateWoorden);
-
-updateWoorden();
 
 function toonTab(id){
 
