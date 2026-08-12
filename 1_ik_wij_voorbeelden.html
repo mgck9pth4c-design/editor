@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Voorbeeldzinnen verbeteren</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: white;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #111;
+        padding: 60px 5vw;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    .row {
+        display: grid;
+
+        /*
+            Links: voorbeeldzin
+            Midden: knop
+            Rechts: verbetering + tip
+        */
+        grid-template-columns: 1fr 90px 1.8fr;
+
+        gap: 35px;
+        align-items: center;
+
+        padding: 40px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .row:first-child {
+        border-top: 1px solid #ddd;
+    }
+
+    .sentence {
+        font-size: 16px;
+        line-height: 1.45;
+    }
+
+    .example {
+        text-align: right;
+    }
+
+    /* Rechter gedeelte */
+    .result {
+        display: grid;
+        grid-template-columns: 1fr 0.8fr;
+        gap: 35px;
+        align-items: center;
+    }
+
+    .improvement {
+        text-align: left;
+        font-size: 16px;
+    }
+
+    .tip {
+        font-size: 16px;
+        line-height: 1.45;
+        color: #555;
+        border-left: 2px solid #ccc;
+        padding-left: 25px;
+    }
+
+    .tip-label {
+        display: block;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #888;
+        margin-bottom: 7px;
+    }
+
+    /* Knop */
+    .toggle-button {
+        width: 64px;
+        height: 64px;
+
+        border: none;
+        border-radius: 50%;
+
+        background: #111;
+        color: white;
+
+        font-size: 32px;
+        cursor: pointer;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        transition:
+            transform 0.2s ease,
+            background-color 0.2s ease,
+            opacity 0.3s ease;
+    }
+
+    .toggle-button:hover {
+        transform: scale(1.08);
+        background: #333;
+    }
+
+    .toggle-button:active {
+        transform: scale(0.96);
+    }
+
+    .toggle-button.used {
+        opacity: 0.35;
+        cursor: default;
+        transform: none;
+    }
+
+    .toggle-button.used:hover {
+        transform: none;
+        background: #111;
+    }
+
+    /* Verborgen resultaat */
+    .result-content {
+        opacity: 0;
+        transform: translateX(-20px);
+        max-height: 0;
+        overflow: hidden;
+
+        transition:
+            opacity 0.6s ease,
+            transform 0.6s ease,
+            max-height 0.8s ease;
+    }
+
+    /* Zichtbaar resultaat */
+    .result-content.visible {
+        opacity: 1;
+        transform: translateX(0);
+        max-height: 300px;
+    }
+
+    /* Mobiele weergave */
+    @media (max-width: 1000px) {
+
+        body {
+            padding: 30px 20px;
+        }
+
+        .row {
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .example {
+            text-align: center;
+        }
+
+        .toggle-button {
+            margin: 0 auto;
+        }
+
+        .result {
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .improvement {
+            text-align: center;
+        }
+
+        .tip {
+            border-left: none;
+            border-top: 1px solid #ccc;
+            padding-left: 0;
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .sentence {
+            font-size: 24px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- VOORBEELD 1 -->
+    <div class="row">
+
+        <div class="sentence example">
+            <b>We</b> zijn dan ook benieuwd naar het effect van de veranderingen aan <b>ons</b> ontwerp wanneer <b>we</b> het aan testgebruikers geven.
+        </div>
+
+        <button class="toggle-button" aria-label="Toon verbetering">
+            →
+        </button>
+
+        <div class="result">
+
+            <div class="result-content improvement">
+                <b>Een gebruikerstest</b> moet aantonen welk effect <b>de wijzigingen</b> aan het ontwerp bereiken.
+            </div>
+
+            <div class="result-content tip">
+                <span class="tip-label">Tip</span>
+                Zoek een alternatief woord dat als onderwerp van de zin kan dienen.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- VOORBEELD 2 -->
+    <div class="row">
+
+        <div class="sentence example">
+            Daarover <b>heb ik</b> geen bronnen kunnen vinden.
+        </div>
+
+        <button class="toggle-button" aria-label="Toon verbetering">
+            →
+        </button>
+
+        <div class="result">
+
+            <div class="result-content improvement">
+                Daarover <b>zijn er</b> geen bronnen beschikbaar.
+            </div>
+
+            <div class="result-content tip">
+                <span class="tip-label">Tip</span>
+                Heroriënteer naar een algemeen perspectief in plaats van je eigen ervaring.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- VOORBEELD 3 -->
+    <div class="row">
+
+        <div class="sentence example">
+            In het tweede hoofdstuk bekijken <b>we</b> de recente wijzigingen.
+        </div>
+
+        <button class="toggle-button" aria-label="Toon verbetering">
+            →
+        </button>
+
+        <div class="result">
+
+            <div class="result-content improvement">
+                In het tweede hoofdstuk <b>worden</b> de recente wijzigingen <b>toegelicht</b>.
+            </div>
+
+            <div class="result-content tip">
+                <span class="tip-label">Tip</span>
+                Gebruik een passieve werkwoordsvorm, zij het dan op een spaarzame manier. Passieven maken je tekst zwaarder.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const rows = document.querySelectorAll(".row");
+
+rows.forEach(row => {
+
+    const button = row.querySelector(".toggle-button");
+    const results = row.querySelectorAll(".result-content");
+
+    button.addEventListener("click", () => {
+
+        // Als de resultaten al zichtbaar zijn, gebeurt er niets.
+        if (button.disabled) {
+            return;
+        }
+
+        // Verbetering en tip tegelijk tonen
+        results.forEach(result => {
+            result.classList.add("visible");
+        });
+
+        // Knop uitschakelen
+        button.classList.add("used");
+        button.disabled = true;
+
+        button.setAttribute(
+            "aria-label",
+            "Verbetering en tip getoond"
+        );
+    });
+
+});
+
+</script>
+
+</body>
+</html>
