@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vraag en antwoord</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        font-family:Helvetica, Arial, sans-serif;
+        color: black;
+        padding: 0 8vw;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1300px;
+    }
+
+    .question,
+    .answer {
+        font-size: 16px;
+        line-height: 1.45;
+        text-align: center;
+    }
+
+    .question {
+        margin-bottom: 35px;
+    }
+
+    .answer {
+        margin-top: 35px;
+    }
+
+    /* Pijl */
+    .arrow {
+        text-align: center;
+        font-size: 34px;
+        line-height: 1;
+        margin: 10px 0;
+    }
+
+    /* Gemarkeerde woorden */
+    .highlight {
+        color: black;
+        transition: color 0.8s ease;
+    }
+
+    .highlight.green {
+        color: #0a9d32;
+    }
+
+    #ref{
+    font-size: 10px;
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- VRAAG -->
+    <div class="question">
+        Verhoogt dagelijkse
+        <span class="highlight">inname</span>
+        van
+        <span class="highlight">soja</span>
+        de
+        <span class="highlight">kans</span>
+        op
+        <span class="highlight">kanker</span>?
+    </div>
+
+    <!-- PIJL -->
+    <div class="arrow">
+        ↓
+    </div>
+
+    <!-- ANTWOORD -->
+    <div class="answer">
+        Een hogere
+        <span class="highlight">soja-inname</span>
+        <span class="highlight">verhoogt</span>
+        de
+        <span class="highlight">kans</span>
+        op
+        <span class="highlight">kanker</span>
+        niet en leidt net tot een lagere
+        <span class="highlight">kans</span>
+        op overlijden aan
+        <span class="highlight">kanker</span>.
+    </div>
+
+    <br>
+    <br>
+
+    <div id="ref">
+    <p>
+        Naar: Nachvak, S. M., Moradi, S., Anjomshoae, J., Rahmani, J., Nasiri, M., Maleki, V., et al. (2019). Soy, soy isoflavones, and protein intake in relation to mortality from all causes, cancers, and cardiovascular diseases: A systematic review and dose-response meta-analysis of prospective cohort studies. <i>Journal of the Academy of Nutrition and Dietetics</i>, 119(9), 1483–1500.
+    </p>
+</div>
+
+</div>
+
+<script>
+
+const words = document.querySelectorAll(".highlight");
+
+/*
+    Timing:
+    
+    0 – 2,5 sec:
+    Alles is zwart.
+    
+    2,5 sec:
+    Alle gemarkeerde woorden worden tegelijk groen.
+    
+    5,5 sec:
+    Alles keert terug naar zwart.
+    
+    Daarna begint de animatie opnieuw.
+*/
+
+function animate() {
+
+    // Beginfase: alles zwart
+    words.forEach(word => {
+        word.classList.remove("green");
+    });
+
+    // Alle woorden tegelijk groen
+    setTimeout(() => {
+        words.forEach(word => {
+            word.classList.add("green");
+        });
+    }, 2500);
+
+    // Terug naar zwart
+    setTimeout(() => {
+        words.forEach(word => {
+            word.classList.remove("green");
+        });
+    }, 5500);
+}
+
+// Eerste uitvoering
+animate();
+
+// Nieuwe cyclus elke 6 seconden
+setInterval(animate, 6000);
+
+</script>
+
+</body>
+</html>
