@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Voorbeeldzinnen verbeteren</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: white;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #111;
+        padding: 60px 5vw;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    .row {
+        display: grid;
+
+        /*
+            Links: voorbeeldzin
+            Midden: knop
+            Rechts: verbetering + tip
+        */
+        grid-template-columns: 1fr 90px 1.8fr;
+
+        gap: 35px;
+        align-items: center;
+
+        padding: 40px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .row:first-child {
+        border-top: 1px solid #ddd;
+    }
+
+    .sentence {
+        font-size: 16px;
+        line-height: 1.45;
+    }
+
+    .example {
+        text-align: right;
+    }
+
+    /* Rechter gedeelte */
+    .result {
+        display: grid;
+        grid-template-columns: 1fr 0.8fr;
+        gap: 35px;
+        align-items: center;
+    }
+
+    .improvement {
+        text-align: left;
+        font-size: 16px;
+    }
+
+    .tip {
+        font-size: 13px;
+        line-height: 1.45;
+        color: #555;
+        border-left: 2px solid #ccc;
+        padding-left: 25px;
+    }
+
+    .tip-label {
+        display: block;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #888;
+        margin-bottom: 7px;
+    }
+
+    /* Knop */
+    .toggle-button {
+        width: 64px;
+        height: 64px;
+
+        border: none;
+        border-radius: 50%;
+
+        background: #111;
+        color: white;
+
+        font-size: 32px;
+        cursor: pointer;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        transition:
+            transform 0.2s ease,
+            background-color 0.2s ease,
+            opacity 0.3s ease;
+    }
+
+    .toggle-button:hover {
+        transform: scale(1.08);
+        background: #333;
+    }
+
+    .toggle-button:active {
+        transform: scale(0.96);
+    }
+
+    .toggle-button.used {
+        opacity: 0.35;
+        cursor: default;
+        transform: none;
+    }
+
+    .toggle-button.used:hover {
+        transform: none;
+        background: #111;
+    }
+
+    /* Verborgen resultaat */
+    .result-content {
+        opacity: 0;
+        transform: translateX(-20px);
+        max-height: 0;
+        overflow: hidden;
+
+        transition:
+            opacity 0.6s ease,
+            transform 0.6s ease,
+            max-height 0.8s ease;
+    }
+
+    /* Zichtbaar resultaat */
+    .result-content.visible {
+        opacity: 1;
+        transform: translateX(0);
+        max-height: 300px;
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- VOORBEELD 1 -->
+    <div class="row">
+
+        <div class="sentence example">
+            <b>Veel mensen</b> zijn van mening dat [...]
+        </div>
+
+        <button class="toggle-button" aria-label="Toon verbetering">
+            →
+        </button>
+
+        <div class="result">
+
+            <div class="result-content improvement">
+                <b>74% van de Antwerpse bevolking</b> is van mening dat [...]
+            </div>
+
+            <div class="result-content tip">
+                <span class="tip-label">Tip</span>
+                Geef concrete cijfers en vermijd woorden zoals 'veel', 'weinig', 'enkele', 'een paar'...
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- VOORBEELD 2 -->
+    <div class="row">
+
+        <div class="sentence example">
+            <b>Een Britse onderzoeker</b> heeft dat vastgesteld.
+        </div>
+
+        <button class="toggle-button" aria-label="Toon verbetering">
+            →
+        </button>
+
+        <div class="result">
+
+            <div class="result-content improvement">
+                Dat blijkt uit <b>onderzoek van [...]</b>
+            </div>
+
+            <div class="result-content tip">
+                <span class="tip-label">Tip</span>
+                Verwijs naar specifieke bronnen
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- VOORBEELD 3 -->
+    <div class="row">
+
+        <div class="sentence example">
+            In de bacheloropleiding Handelswetenschappen moet <b>men</b> voorkennis van wiskunde hebben.
+        </div>
+
+        <button class="toggle-button" aria-label="Toon verbetering">
+            →
+        </button>
+
+        <div class="result">
+
+            <div class="result-content improvement">
+                <b>Beginnende studenten</b> handelswetenschappen moeten voorkennis van wiskunde hebben.
+            </div>
+
+            <div class="result-content tip">
+                <span class="tip-label">Tip</span>
+                Verwijs naar specifieke personen.
+            </div>
+
+        </div>
+    </div>
+
+        <!-- VOORBEELD 4 -->
+        <div class="row">
+
+        <div class="sentence example">
+            Agalev was <b>vroeger</b> de naam van de Vlaamse politieke partij Groen.
+        </div>
+
+        <button class="toggle-button" aria-label="Toon verbetering">
+            →
+        </button>
+
+        <div class="result">
+
+            <div class="result-content improvement">
+                Op 15 november 2003 veranderde de Vlaamse politieke partij Agalev haar naam in 'Groen!'.
+            </div>
+
+            <div class="result-content tip">
+                <span class="tip-label">Tip</span>
+                Verwijs naar specifieke momenten.
+            </div>
+
+        </div>
+
+        </div>
+
+        <!-- VOORBEELD 5 -->
+        <div class="row">
+
+        <div class="sentence example">
+            Een continu verhoogde productie van insuline kan tot <b>ziekte</b> leiden.
+        </div>
+
+        <button class="toggle-button" aria-label="Toon verbetering">
+            →
+        </button>
+
+        <div class="result">
+
+            <div class="result-content improvement">
+                Een continu verhoogde productie van insuline kan tot <b>diabetes mellitus</b> leiden.
+            </div>
+
+            <div class="result-content tip">
+                <span class="tip-label">Tip</span>
+                Verhoog je precieze met de juiste vaktermen.
+            </div>
+
+        </div>
+
+        </div>
+
+</div>
+
+
+<script>
+
+const rows = document.querySelectorAll(".row");
+
+rows.forEach(row => {
+
+    const button = row.querySelector(".toggle-button");
+    const results = row.querySelectorAll(".result-content");
+
+    button.addEventListener("click", () => {
+
+        // Als de resultaten al zichtbaar zijn, gebeurt er niets.
+        if (button.disabled) {
+            return;
+        }
+
+        // Verbetering en tip tegelijk tonen
+        results.forEach(result => {
+            result.classList.add("visible");
+        });
+
+        // Knop uitschakelen
+        button.classList.add("used");
+        button.disabled = true;
+
+        button.setAttribute(
+            "aria-label",
+            "Verbetering en tip getoond"
+        );
+    });
+
+});
+
+</script>
+
+</body>
+</html>
