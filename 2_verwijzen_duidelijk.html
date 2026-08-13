@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Verwijzingsanimatie</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: white;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #111;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 80px 5vw;
+    }
+
+    .sentence {
+        position: relative;
+        text-align: center;
+
+        /* Aangepast naar 20px */
+        font-size: 20px;
+        line-height: 1.5;
+
+        /* Extra ruimte boven de zin voor de pijl */
+        padding-top: 130px;
+    }
+
+    .word {
+        display: inline-block;
+    }
+
+    /*
+        De SVG bevindt zich volledig in de ruimte
+        boven de tekst.
+    */
+    .arrow-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 115px;
+
+        overflow: visible;
+        pointer-events: none;
+    }
+
+    .arrow-path {
+        fill: none;
+        stroke: #111;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+
+        transition: d 1.2s ease-in-out;
+    }
+
+    .ze {
+        color: #16a085;
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="sentence" id="sentence">
+
+        <!-- Pijl bevindt zich boven de tekst -->
+        <svg
+            class="arrow-layer"
+            id="arrowLayer"
+            aria-hidden="true">
+
+            <defs>
+                <marker
+                    id="arrowhead"
+                    markerWidth="10"
+                    markerHeight="10"
+                    refX="8"
+                    refY="4"
+                    orient="auto"
+                    markerUnits="strokeWidth">
+
+                    <path
+                        d="M0,0 L0,8 L8,4 z">
+                    </path>
+
+                </marker>
+            </defs>
+
+            <path
+                id="arrowPath"
+                class="arrow-path"
+                marker-end="url(#arrowhead)">
+            </path>
+
+        </svg>
+
+
+        De financiële
+        <span id="afdeling" class="word">
+            <b>afdeling</b>
+        </span>
+        verstrekt gegevens aan de
+        <span id="directie" class="word">
+            <b>directie</b>
+        </span>.
+        <span id="ze" class="word ze">
+            Ze
+        </span>
+        verwerkt die gegevens in een rapport.
+
+    </div>
+
+</div>
+
+
+<script>
+
+const arrowLayer = document.getElementById("arrowLayer");
+const arrowPath = document.getElementById("arrowPath");
+
+const afdeling = document.getElementById("afdeling");
+const directie = document.getElementById("directie");
+const ze = document.getElementById("ze");
+
+
+/*
+    Bepaal de horizontale positie van een woord.
+*/
+function getWordPosition(word) {
+
+    const wordRect = word.getBoundingClientRect();
+    const svgRect = arrowLayer.getBoundingClientRect();
+
+    return {
+        center:
+            (wordRect.left + wordRect.right) / 2
+            - svgRect.left
+    };
+}
+
+
+/*
+    Teken een boog die volledig boven
+    de tekst blijft.
+*/
+function drawArrow(target) {
+
+    const sourceX = getWordPosition(ze).center;
+    const targetX = getWordPosition(target).center;
+
+    /*
+        Beide uiteinden liggen boven de tekst.
+        De exacte waarden kunnen eventueel
+        nog verder worden aangepast.
+    */
+    const startY = 120;
+    const endY = 120;
+
+    /*
+        De boog komt hoger te liggen wanneer
+        de twee woorden verder uit elkaar staan.
+    */
+    const distance = Math.abs(targetX - sourceX);
+
+    const arcHeight = Math.min(
+        85,
+        35 + distance * 0.12
+    );
+
+    const controlX = (sourceX + targetX) / 2;
+    const controlY = startY - arcHeight;
+
+    const path = `
+        M ${sourceX} ${startY}
+        Q ${controlX} ${controlY}
+          ${targetX} ${endY}
+    `;
+
+    arrowPath.setAttribute("d", path);
+}
+
+
+/*
+    Beginpositie:
+    Ze → afdeling
+*/
+function pointToAfdeling() {
+    drawArrow(afdeling);
+}
+
+
+/*
+    Tweede positie:
+    Ze → directie
+*/
+function pointToDirectie() {
+    drawArrow(directie);
+}
+
+
+/*
+    Begin bij "afdeling".
+*/
+let pointingToAfdeling = true;
+
+pointToAfdeling();
+
+
+/*
+    Om de 2,5 seconden wisselen.
+*/
+setInterval(() => {
+
+    if (pointingToAfdeling) {
+        pointToDirectie();
+    } else {
+        pointToAfdeling();
+    }
+
+    pointingToAfdeling = !pointingToAfdeling;
+
+}, 2500);
+
+
+/*
+    Opnieuw berekenen wanneer het venster
+    van grootte verandert.
+*/
+window.addEventListener("resize", () => {
+
+    if (pointingToAfdeling) {
+        pointToAfdeling();
+    } else {
+        pointToDirectie();
+    }
+
+});
+
+</script>
+
+</body>
+</html>
