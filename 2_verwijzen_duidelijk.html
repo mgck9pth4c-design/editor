@@ -23,24 +23,22 @@
         color: #111;
     }
 
-    .container {
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 80px 5vw;
-    }
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 25px 5vw;
+}
 
-    .sentence {
-        position: relative;
-        text-align: center;
+.sentence {
+    position: relative;
+    text-align: center;
+    font-size: 20px;
+    line-height: 1.5;
 
-        /* Aangepast naar 20px */
-        font-size: 20px;
-        line-height: 1.5;
-
-        /* Extra ruimte boven de zin voor de pijl */
-        padding-top: 130px;
-    }
+    /* Ruimte voor de pijl */
+    padding-top: 90px;
+}
 
     .word {
         display: inline-block;
@@ -50,17 +48,17 @@
         De SVG bevindt zich volledig in de ruimte
         boven de tekst.
     */
-    .arrow-layer {
-        position: absolute;
-        top: 0;
-        left: 0;
+.arrow-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
 
-        width: 100%;
-        height: 115px;
+    width: 100%;
+    height: 80px;
 
-        overflow: visible;
-        pointer-events: none;
-    }
+    overflow: visible;
+    pointer-events: none;
+}
 
     .arrow-path {
         fill: none;
@@ -175,8 +173,8 @@ function drawArrow(target) {
         De exacte waarden kunnen eventueel
         nog verder worden aangepast.
     */
-    const startY = 120;
-    const endY = 120;
+    const startY = 70;
+    const endY = 70;
 
     /*
         De boog komt hoger te liggen wanneer
