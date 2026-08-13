@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Oorzaak en interpretatie</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: white;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #111;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 50px 5vw;
+    }
+
+
+    /* ==================================================
+       ALGEMEEN
+       ================================================== */
+
+    .screen {
+        transition:
+            opacity 0.6s ease,
+            transform 0.6s ease;
+    }
+
+    .screen.hidden {
+        display: none;
+    }
+
+
+    /* ==================================================
+       BEGINFASE
+       ================================================== */
+
+    .sentences {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 70px;
+        align-items: start;
+    }
+
+    .sentence-box {
+        text-align: left;
+    }
+
+    .sentence {
+        font-size: 28px;
+        line-height: 1.45;
+        min-height: 130px;
+
+        display: flex;
+        justify-content: right;
+        align-items: center;
+    }
+
+.number-circle {
+    width: 58px;
+    height: 58px;
+
+    margin: 25px auto 0;
+
+    border: 2px solid #111;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+
+    /* Geen interactie */
+    cursor: default;
+}
+
+
+    /* ==================================================
+       VRAAG
+       ================================================== */
+
+    .question {
+        margin-top: 75px;
+        text-align: center;
+    }
+
+    .question-text {
+        font-size: 28px;
+        line-height: 1.4;
+        margin-bottom: 30px;
+    }
+
+    .answers {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .answer-button {
+        width: 80px;
+        height: 65px;
+
+        border: 2px solid #111;
+        border-radius: 12px;
+
+        background: white;
+        color: #111;
+
+        font-size: 26px;
+        cursor: pointer;
+
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease,
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+    .answer-button:hover {
+        background: #111;
+        color: white;
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .answer-button:active {
+        transform: translateY(-1px);
+    }
+
+
+    /* ==================================================
+       RESULTAAT
+       ================================================== */
+
+    .result-screen {
+        animation: resultIn 0.7s ease forwards;
+    }
+
+    @keyframes resultIn {
+        from {
+            opacity: 0;
+            transform: translateX(35px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .result-sentences {
+        margin-bottom: 65px;
+    }
+
+    .result-sentences .sentence {
+        min-height: auto;
+        font-size: 25px;
+    }
+
+
+    /* Interpretatieblokken */
+
+    .interpretations {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .interpretation {
+        margin-bottom: 30px;
+        padding: 30px 35px;
+
+        border-radius: 14px;
+
+        font-size: 25px;
+        line-height: 1.5;
+
+        opacity: 0;
+        transform: translateY(20px);
+
+        animation: textIn 0.7s ease forwards;
+    }
+
+    .interpretation.your {
+        background: #f2f2f2;
+        animation-delay: 0.2s;
+    }
+
+    .interpretation.other {
+        background: #eef7f0;
+        animation-delay: 0.45s;
+    }
+
+    @keyframes textIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .label {
+        display: block;
+
+        margin-bottom: 12px;
+
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: bold;
+        color: #666;
+    }
+
+
+    /* ==================================================
+       TERUGKNOP
+       ================================================== */
+
+    .back-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 58px;
+        height: 58px;
+
+        margin: 55px auto 0;
+
+        border: 2px solid #111;
+        border-radius: 50%;
+
+        background: white;
+        color: #111;
+
+        font-size: 30px;
+        cursor: pointer;
+
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease,
+            transform 0.25s ease;
+    }
+
+    .back-button:hover {
+        background: #111;
+        color: white;
+        transform: translateX(-5px);
+    }
+
+
+    /* ==================================================
+       RESPONSIVE
+       ================================================== */
+
+    @media (max-width: 800px) {
+
+        .container {
+            padding: 35px 25px;
+        }
+
+        .sentences {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .sentence {
+            font-size: 25px;
+            min-height: auto;
+        }
+
+        .number-circle {
+            margin-top: 15px;
+        }
+
+        .question {
+            margin-top: 55px;
+        }
+
+        .question-text {
+            font-size: 24px;
+        }
+
+        .result-sentences {
+            margin-bottom: 45px;
+        }
+
+        .result-sentences .sentence {
+            font-size: 22px;
+        }
+
+        .interpretation {
+            font-size: 21px;
+            padding: 25px;
+        }
+    }
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- ==================================================
+         BEGINFASE
+         ================================================== -->
+
+    <section id="startScreen" class="screen">
+
+        <div class="sentences">
+
+            <div class="sentence-box">
+
+                <div class="sentence">
+                    De Vlaamse regering heeft besloten voorlopig
+                    geen verdere actie te ondernemen.
+                </div>
+
+                <div class="number-circle">
+                    1
+                </div>
+
+            </div>
+
+
+            <div class="sentence-box">
+
+                <div class="sentence">
+                    De vakbonden gaan zelf praten met een
+                    mogelijke overnemer.
+                </div>
+
+                <div class="number-circle">
+                    2
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Vraag -->
+
+        <div class="question">
+
+            <div class="question-text">
+                <b>In welke zin staat volgens jou de oorzaak van deze situatie?</b>
+            </div>
+
+            <div class="answers">
+
+                <button
+                    class="answer-button"
+                    data-answer="1">
+                    1
+                </button>
+
+                <button
+                    class="answer-button"
+                    data-answer="2">
+                    2
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         RESULTAAT
+         ================================================== -->
+
+    <section id="resultScreen" class="screen hidden">
+
+        <!-- Originele zinnen -->
+
+        <div class="sentences result-sentences">
+
+            <div class="sentence-box">
+
+                <div class="sentence">
+                    De Vlaamse regering heeft besloten voorlopig
+                    geen verdere actie te ondernemen.
+                </div>
+
+                <div class="number-circle">
+                    1
+                </div>
+
+            </div>
+
+
+            <div class="sentence-box">
+
+                <div class="sentence">
+                    De vakbonden gaan zelf praten met een
+                    mogelijke overnemer.
+                </div>
+
+                <div class="number-circle">
+                    2
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Interpretaties -->
+
+        <div class="interpretations">
+
+            <div
+                id="yourInterpretation"
+                class="interpretation your">
+
+                <span class="label">
+                    Jouw interpretatie:
+                </span>
+
+                <span id="yourText"></span>
+
+            </div>
+
+
+            <div class="interpretation other">
+
+                <span class="label">
+                    Maar evenzeer mogelijk:
+                </span>
+
+                <span id="otherText"></span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Terug -->
+
+        <button
+            id="backButton"
+            class="back-button"
+            aria-label="Terug">
+            ←
+        </button>
+
+    </section>
+
+</div>
+
+
+<script>
+
+const startScreen = document.getElementById("startScreen");
+const resultScreen = document.getElementById("resultScreen");
+
+const yourText = document.getElementById("yourText");
+const otherText = document.getElementById("otherText");
+
+const buttons = document.querySelectorAll(".answer-button");
+const backButton = document.getElementById("backButton");
+
+
+/*
+    Interpretatie wanneer de gebruiker voor 1 kiest
+*/
+const interpretation1 = {
+
+    your:
+        "De Vlaamse regering heeft besloten voorlopig geen verdere actie te ondernemen en als reactie daarop gaan de vakbonden nu zelf praten met een mogelijke overnemer.",
+
+    other:
+        "De Vlaamse regering heeft besloten voorlopig geen verdere actie te ondernemen. De reden daarvoor is dat de vakbonden zelf gaan praten met een mogelijke overnemer."
+};
+
+
+/*
+    Interpretatie wanneer de gebruiker voor 2 kiest
+*/
+const interpretation2 = {
+
+    your:
+        "De Vlaamse regering heeft besloten voorlopig geen verdere actie te ondernemen. De reden daarvoor is dat de vakbonden zelf gaan praten met een mogelijke overnemer.",
+
+    other:
+        "De Vlaamse regering heeft besloten voorlopig geen verdere actie te ondernemen en als reactie daarop gaan de vakbonden nu zelf praten met een mogelijke overnemer."
+};
+
+
+/*
+    Antwoord verwerken
+*/
+buttons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const answer = button.dataset.answer;
+
+        let interpretation;
+
+        if (answer === "1") {
+            interpretation = interpretation1;
+        } else {
+            interpretation = interpretation2;
+        }
+
+        yourText.textContent = interpretation.your;
+        otherText.textContent = interpretation.other;
+
+
+        // Beginfase verbergen
+        startScreen.classList.add("hidden");
+
+        // Resultaatscherm tonen
+        resultScreen.classList.remove("hidden");
+
+        // Animatie opnieuw activeren
+        resultScreen.classList.remove("result-screen");
+
+        void resultScreen.offsetWidth;
+
+        resultScreen.classList.add("result-screen");
+
+        // Scroll eventueel naar boven
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    });
+
+});
+
+
+/*
+    Terug naar de beginfase
+*/
+backButton.addEventListener("click", () => {
+
+    resultScreen.classList.add("hidden");
+    startScreen.classList.remove("hidden");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+});
+
+</script>
+
+</body>
+</html>
