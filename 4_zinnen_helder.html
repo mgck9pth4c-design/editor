@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Wisselende tekstversies</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: white;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #111;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 30px 5vw;
+    }
+
+    .text {
+        font-size: 20px;
+        line-height: 1.6;
+        text-align: justify;
+    }
+
+    /*
+        Gewone tekst blijft altijd donker.
+    */
+    .normal {
+        color: #111;
+    }
+
+    /*
+        Tekstdelen die van kleur veranderen.
+    */
+    .change {
+        color: #111;
+        transition: color 1s ease;
+    }
+
+    /*
+        Bij de tweede versie worden deze
+        tekstdelen heel lichtgrijs.
+    */
+    .change.faded {
+        color: #eeeeee;
+    }
+
+    /*
+        Pijlknop
+    */
+#toggleKnop{
+    font-size:28px;
+    padding:8px 16px;
+    margin-bottom:25px;
+    cursor:pointer;
+    border:1px solid #bbb;
+    border-radius:8px;
+    background:white;
+}
+
+#toggleKnop:hover{
+    background:#f3f3f3;
+}
+
+#pijl{
+    display:inline-block;
+    transition:transform .3s ease;
+}
+
+#pijl.gedraaid{
+    transform:rotate(180deg);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="text">
+
+        Hoewel de manier waarop hedendaagse audiovisuele media
+        <span class="change">
+            , en in het bijzonder fictiefilms en televisieseries die zich richten op maatschappelijk controversiële thema’s, door middel van narratieve conventies, karakterisering, cinematografische technieken en terugkerende representaties van bepaalde sociale groepen</span>
+        bijdragen aan de constructie van betekenissen die door kijkers niet noodzakelijk op een uniforme wijze worden geïnterpreteerd
+        <span class="change">omdat deze betekenissen mede afhankelijk zijn van de sociale, culturele en ideologische kaders waarbinnen individuele kijkers audiovisuele teksten consumeren en beoordelen,</span>
+        in toenemende mate wordt onderzocht
+        <span class="change">vanuit een theoretisch perspectief dat de nadruk legt op de actieve rol van het publiek in het betekenisgevingsproces,</span>
+        blijft het moeilijk om empirisch vast te stellen in welke mate specifieke representaties daadwerkelijk invloed hebben op de attitudes en percepties van kijkers
+        <span class="change">, aangezien dergelijke effecten niet los kunnen worden beschouwd van reeds bestaande overtuigingen, sociale ervaringen en mediagewoonten.</span>
+
+    </div>
+
+    <br>
+
+    <!-- Knop -->
+    <button id="toggleKnop" aria-label="Wissel weergave">
+        <span id="pijl">→</span>
+    </button>
+
+</div>
+
+
+<script>
+
+const changingParts = document.querySelectorAll(".change");
+const knop = document.getElementById("toggleKnop");
+const pijl = document.getElementById("pijl");
+
+
+let faded = false;
+
+
+/*
+    Wanneer de gebruiker op de pijl klikt,
+    wisselen de tekstdelen van kleur.
+*/
+knop.addEventListener("click", () => {
+
+    faded = !faded;
+
+    changingParts.forEach(part => {
+
+        if (faded) {
+            part.classList.add("faded");
+            pijl.classList.add("gedraaid");
+        } else {
+            part.classList.remove("faded");
+            pijl.classList.remove("gedraaid");
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
