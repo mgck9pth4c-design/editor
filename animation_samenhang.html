@@ -3,107 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Visualisatie alinea's</title>
-
+<title>Vergelijking alinea's</title>
 <style>
+* { box-sizing: border-box; }
 
-body{
-    margin:40px;
-    font-family:Helvetica, Arial, sans-serif;
-    font-size:16px;
-    line-height:1.8;
-    text-align:justify;
+html, body {
+    width: 800px;
+    height: 350px;
+    margin: 0;
+    overflow: hidden;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #222;
 }
 
-#toggleKnop{
-    font-size:28px;
-    padding:8px 16px;
-    margin-bottom:25px;
-    cursor:pointer;
-    border:1px solid #bbb;
-    border-radius:8px;
-    background:white;
+body {
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-#toggleKnop:hover{
-    background:#f3f3f3;
+#toggleKnop {
+    align-self: flex-start;
+    flex: 0 0 auto;
+    font-size: 20px;
+    line-height: 1;
+    padding: 6px 12px;
+    cursor: pointer;
+    border: 1px solid #bbb;
+    border-radius: 7px;
+    background: white;
 }
 
-#pijl{
-    display:inline-block;
-    transition:transform .3s ease;
+#toggleKnop:hover { background: #f3f3f3; }
+
+#pijl {
+    display: inline-block;
+    transition: transform .3s ease;
 }
 
-#pijl.gedraaid{
-    transform:rotate(180deg);
+#pijl.gedraaid { transform: rotate(180deg); }
+
+#teksten {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    transition: opacity .25s ease;
 }
 
-#tekst{
-    max-width:850px;
-    transition:opacity .8s ease;
+#teksten.vergelijk {
+    grid-template-columns: 1fr 1fr;
 }
 
-p{
-    margin:0 0 1.2em 0;
+.versie {
+    min-width: 0;
+    overflow: hidden;
+    padding: 9px 11px;
+    border: 1px solid #d5d5d5;
+    border-radius: 7px;
+    background: #fafafa;
+    font-size: 13px;
+    line-height: 1.38;
+    text-align: left;
 }
 
+.versie h2 {
+    margin: 0 0 7px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.versie p { margin: 0; }
+
+#versieMet { display: none; }
+#teksten.vergelijk #versieMet { display: block; }
+
+@media (max-width: 800px) {
+    html, body { width: 100%; }
+}
 </style>
-
 </head>
-
 <body>
 
-<div id="tekst"></div>
+<div id="teksten">
+    <section class="versie" id="versieZonder">
+        <p>
+            Er kunnen drie vormen van telewerken onderscheiden worden. Wie mobiel werkt,
+            werkt onderweg of op een variabele locatie. Eilandwerken gaat om mensen die
+            samenwerken op een speciaal ingericht kantoor dicht bij huis. Telethuiswerken
+            is werk waarbij de werkplek het eigen huis is. Een gedeelte van het huis is
+            doorgaans als kantoor ingericht. De werk- en de privésfeer blijven in zekere
+            mate gescheiden.
+        </p>
+    </section>
 
-<button id="toggleKnop" aria-label="Wissel weergave">
+    <section class="versie" id="versieMet">
+        <p>
+            Er kunnen drie vormen van telewerken onderscheiden worden. De <b>eerste</b>
+            soort is mobiel werken. Wie mobiel werkt, werkt onderweg of op een variabele
+            locatie. De <b>tweede</b> soort is het zogeheten eilandwerken. <b>Hier</b>
+            gaat het om mensen die samenwerken op een speciaal ingericht kantoor dicht
+            bij huis. De <b>laatste</b> soort is het telethuiswerken, <b>waarbij</b> de
+            werkplek het eigen huis is. In <b>dit</b> geval is een gedeelte van het huis
+            doorgaans als kantoor ingericht, <b>zodat</b> de werk- en de privésfeer in
+            zekere mate gescheiden blijven.
+        </p>
+    </section>
+</div>
+
+<button id="toggleKnop" aria-label="Toon beide versies">
     <span id="pijl">→</span>
 </button>
 
 <script>
-
-const zonder =
-`<p>
-    Er kunnen drie vormen van telewerken onderscheiden worden. Wie mobiel werkt, werkt onderweg of op een variabele locatie. Eilandwerken gaat om mensen die samenwerken op een speciaal ingericht kantoor dicht bij huis. Telethuiswerken is werk waarbij de werkplek het eigen huis is. Een gedeelte van het huis is doorgaans als kantoor ingericht. De  werk- en de privésfeer blijven in zekere mate gescheiden.
-</p>`;
-
-const met =
-`
-<p>
-    Er kunnen drie vormen van telewerken onderscheiden worden. De <b>eerste</b> soort is mobiel werken. Wie mobiel werkt, werkt onderweg of op een variabele locatie. De <b>tweede</b> soort is het zogeheten eilandwerken. <b>Hier</b> gaat het om mensen die samenwerken op een speciaal ingericht kantoor dicht bij huis. De <b>laatste</b> soort is het telethuiswerken, <b>waarbij</b> de werkplek het eigen huis is. In <b>dit</b> geval is een gedeelte van het huis doorgaans als kantoor ingericht, <b>zodat</b> de werk- en de privésfeer in zekere mate gescheiden blijven.
-</p>
-`;
-
-const tekst = document.getElementById("tekst");
 const knop = document.getElementById("toggleKnop");
 const pijl = document.getElementById("pijl");
-
-let alinea = false;
-
-// Begin met de tekst zonder alinea's
-tekst.innerHTML = zonder;
+const teksten = document.getElementById("teksten");
+let vergelijken = false;
 
 knop.addEventListener("click", () => {
-
-    tekst.style.opacity = 0;
-
-    setTimeout(() => {
-
-        if(alinea){
-            tekst.innerHTML = zonder;
-            pijl.classList.remove("gedraaid");
-        }else{
-            tekst.innerHTML = met;
-            pijl.classList.add("gedraaid");
-        }
-
-        tekst.style.opacity = 1;
-        alinea = !alinea;
-
-    },400);
-
+    vergelijken = !vergelijken;
+    teksten.classList.toggle("vergelijk", vergelijken);
+    pijl.classList.toggle("gedraaid", vergelijken);
+    knop.setAttribute(
+        "aria-label",
+        vergelijken ? "Verberg tweede versie" : "Toon beide versies"
+    );
 });
-
 </script>
 
 </body>
