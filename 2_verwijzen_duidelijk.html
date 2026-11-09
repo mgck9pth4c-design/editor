@@ -15,6 +15,7 @@
     body {
         margin: 0;
         padding: 0;
+        height: 100%;
     }
 
     body {
@@ -23,42 +24,70 @@
         color: #111;
     }
 
-.container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 25px 5vw;
-}
+    /*
+        Het frame: standaard 1200 x 250.
+        De hoogte volgt het frame waarin de pagina staat
+        (bijvoorbeeld een iframe van 1200x250), de inhoud
+        wordt verticaal gecentreerd.
+    */
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        height: 100%;
+        min-height: 0;
+        margin: 0 auto;
+        padding: 0 5vw;
 
-.sentence {
-    position: relative;
-    text-align: center;
-    font-size: 20px;
-    line-height: 1.5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    /* Ruimte voor de pijl */
-    padding-top: 90px;
-}
+        /* Vangnet voor extreem smalle frames */
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .sentence {
+        position: relative;
+        width: 100%;
+        text-align: center;
+
+        /* Schaalt mee: 20px bij 1200px breed, kleiner bij smallere frames */
+        font-size: clamp(14px, 1.6vw + 2px, 20px);
+        line-height: 1.6;
+
+        /* Ruimte voor de pijl boven de eerste regel */
+        padding: 56px 0 10px;
+    }
+
+    /* Smalle frames: tekst loopt over meerdere regels, dus ruimere regels
+       en een marge links waar de pijl langs kan lopen. */
+    @media (max-width: 700px) {
+        .sentence {
+            line-height: 1.9;
+            padding-left: 26px;
+            padding-top: 40px;
+            text-align: left;
+        }
+    }
 
     .word {
         display: inline-block;
     }
 
     /*
-        De SVG bevindt zich volledig in de ruimte
-        boven de tekst.
+        De SVG ligt over de hele zin heen (de pijl zelf wordt
+        berekend t.o.v. de positie van de woorden).
     */
-.arrow-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
+    .arrow-layer {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
 
-    width: 100%;
-    height: 80px;
-
-    overflow: visible;
-    pointer-events: none;
-}
+        overflow: visible;
+        pointer-events: none;
+    }
 
     .arrow-path {
         fill: none;
@@ -70,10 +99,20 @@
         transition: d 1.2s ease-in-out;
     }
 
+    /* Geen animatie tijdens het wijzigen van de venstergrootte */
+    .no-anim .arrow-path {
+        transition: none;
+    }
+
     .ze {
         color: #16a085;
     }
 
+    @media (prefers-reduced-motion: reduce) {
+        .arrow-path {
+            transition: none;
+        }
+    }
 </style>
 </head>
 
@@ -83,7 +122,6 @@
 
     <div class="sentence" id="sentence">
 
-        <!-- Pijl bevindt zich boven de tekst -->
         <svg
             class="arrow-layer"
             id="arrowLayer"
@@ -92,16 +130,14 @@
             <defs>
                 <marker
                     id="arrowhead"
-                    markerWidth="10"
-                    markerHeight="10"
-                    refX="8"
-                    refY="4"
+                    markerWidth="5"
+                    markerHeight="5"
+                    refX="2"
+                    refY="2"
                     orient="auto"
                     markerUnits="strokeWidth">
 
-                    <path
-                        d="M0,0 L0,8 L8,4 z">
-                    </path>
+                    <path d="M0,0 L0,4 L4,2 z" fill="#111"></path>
 
                 </marker>
             </defs>
@@ -114,8 +150,8 @@
 
         </svg>
 
-
-        De financiële
+        <span id="firstWord" class="word">De</span>
+        financiële
         <span id="afdeling" class="word">
             <b>afdeling</b>
         </span>
@@ -135,126 +171,128 @@
 
 <script>
 
-const arrowLayer = document.getElementById("arrowLayer");
+const sentence = document.getElementById("sentence");
 const arrowPath = document.getElementById("arrowPath");
 
+const firstWord = document.getElementById("firstWord");
 const afdeling = document.getElementById("afdeling");
 const directie = document.getElementById("directie");
 const ze = document.getElementById("ze");
 
 
 /*
-    Bepaal de horizontale positie van een woord.
+    Positie van een woord, relatief aan de zin.
+    x = midden, y = bovenkant van het woord.
 */
 function getWordPosition(word) {
 
-    const wordRect = word.getBoundingClientRect();
-    const svgRect = arrowLayer.getBoundingClientRect();
+    const w = word.getBoundingClientRect();
+    const s = sentence.getBoundingClientRect();
 
     return {
-        center:
-            (wordRect.left + wordRect.right) / 2
-            - svgRect.left
+        x: (w.left + w.right) / 2 - s.left,
+        y: w.top - s.top
     };
 }
 
 
 /*
-    Teken een boog die volledig boven
-    de tekst blijft.
+    Teken de pijl van "Ze" naar het doelwoord.
+
+    - Staan alle woorden op de eerste regel (breed frame):
+      een boog boven de tekst.
+    - Staan ze op verschillende regels (smal frame):
+      de pijl loopt via de linkermarge, zodat hij niet
+      dwars door de tekst heen gaat.
+
+    Beide gevallen gebruiken dezelfde kromme (C), zodat
+    de overgang tussen de twee woorden soepel animeert.
 */
 function drawArrow(target) {
 
-    const sourceX = getWordPosition(ze).center;
-    const targetX = getWordPosition(target).center;
+    const from = getWordPosition(ze);
+    const to = getWordPosition(target);
+    const first = getWordPosition(firstWord);
 
-    /*
-        Beide uiteinden liggen boven de tekst.
-        De exacte waarden kunnen eventueel
-        nog verder worden aangepast.
-    */
-    const startY = 70;
-    const endY = 70;
+    const tolerance = 4;
 
-    /*
-        De boog komt hoger te liggen wanneer
-        de twee woorden verder uit elkaar staan.
-    */
-    const distance = Math.abs(targetX - sourceX);
+    const allOnFirstLine =
+        Math.abs(from.y - first.y) < tolerance &&
+        Math.abs(to.y - first.y) < tolerance;
 
-    const arcHeight = Math.min(
-        85,
-        35 + distance * 0.12
+    const gap = 6;               // afstand tussen pijl en woord
+    const startY = from.y - gap;
+    const endY = to.y - gap;
+
+    let c1x, c1y, c2x, c2y;
+
+    if (allOnFirstLine) {
+
+        const distance = Math.abs(to.x - from.x);
+        const height = Math.min(56, 24 + distance * 0.08);
+
+        c1x = from.x;
+        c1y = startY - height;
+        c2x = to.x;
+        c2y = endY - height;
+
+    } else {
+
+        // Route via de linkermarge
+        const gutterX = -22;
+
+        c1x = gutterX;
+        c1y = startY - 14;
+        c2x = gutterX;
+        c2y = endY - 22;
+    }
+
+    arrowPath.setAttribute("d",
+        `M ${from.x} ${startY}
+         C ${c1x} ${c1y}
+           ${c2x} ${c2y}
+           ${to.x} ${endY}`
     );
-
-    const controlX = (sourceX + targetX) / 2;
-    const controlY = startY - arcHeight;
-
-    const path = `
-        M ${sourceX} ${startY}
-        Q ${controlX} ${controlY}
-          ${targetX} ${endY}
-    `;
-
-    arrowPath.setAttribute("d", path);
 }
 
 
-/*
-    Beginpositie:
-    Ze → afdeling
-*/
-function pointToAfdeling() {
-    drawArrow(afdeling);
-}
+let pointingToAfdeling = true;
 
-
-/*
-    Tweede positie:
-    Ze → directie
-*/
-function pointToDirectie() {
-    drawArrow(directie);
+function redraw() {
+    drawArrow(pointingToAfdeling ? afdeling : directie);
 }
 
 
 /*
     Begin bij "afdeling".
 */
-let pointingToAfdeling = true;
-
-pointToAfdeling();
+redraw();
 
 
 /*
     Om de 2,5 seconden wisselen.
 */
 setInterval(() => {
-
-    if (pointingToAfdeling) {
-        pointToDirectie();
-    } else {
-        pointToAfdeling();
-    }
-
     pointingToAfdeling = !pointingToAfdeling;
-
+    redraw();
 }, 2500);
 
 
 /*
-    Opnieuw berekenen wanneer het venster
-    van grootte verandert.
+    Opnieuw berekenen bij een andere venstergrootte,
+    zonder animatie.
 */
-window.addEventListener("resize", () => {
+function redrawInstantly() {
+    document.body.classList.add("no-anim");
+    redraw();
+    void arrowPath.getBoundingClientRect();   // forceer reflow
+    document.body.classList.remove("no-anim");
+}
 
-    if (pointingToAfdeling) {
-        pointToAfdeling();
-    } else {
-        pointToDirectie();
-    }
+window.addEventListener("resize", redrawInstantly);
 
-});
+/* Lettertypes/layout kunnen na het laden nog verschuiven */
+window.addEventListener("load", redrawInstantly);
 
 </script>
 
