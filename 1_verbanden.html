@@ -15,6 +15,7 @@
     body {
         margin: 0;
         padding: 0;
+        min-height: 100%;
     }
 
     body {
@@ -23,11 +24,23 @@
         color: #111;
     }
 
+    /* ==================================================
+       BASISFRAME: ontworpen voor 1200 x 950
+       Alle maten schalen mee met de breedte via clamp():
+       bij 1200px breed = de "volle" waarde (24px, 70px, ...)
+       ================================================== */
+
     .container {
         width: 100%;
-        max-width: 1400px;
+        max-width: 1200px;
+        min-height: 100vh;
         margin: 0 auto;
-        padding: 50px 5vw;
+        padding: clamp(24px, 4vw, 50px) clamp(20px, 5vw, 60px);
+
+        /* Inhoud verticaal centreren in het frame */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
 
@@ -36,9 +49,7 @@
        ================================================== */
 
     .screen {
-        transition:
-            opacity 0.6s ease,
-            transform 0.6s ease;
+        width: 100%;
     }
 
     .screen.hidden {
@@ -53,7 +64,7 @@
     .sentences {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 70px;
+        gap: clamp(30px, 5.8vw, 70px);
         align-items: start;
     }
 
@@ -62,33 +73,31 @@
     }
 
     .sentence {
-        font-size: 24px;
+        font-size: clamp(18px, 2vw, 24px);
         line-height: 1.45;
-        min-height: 130px;
+        min-height: clamp(0px, 10.8vw, 130px);
 
         display: flex;
         justify-content: right;
         align-items: flex-start;
     }
 
-.number-circle {
-    width: 58px;
-    height: 58px;
+    .number-circle {
+        width: clamp(44px, 4.8vw, 58px);
+        height: clamp(44px, 4.8vw, 58px);
 
-    margin: 25px auto 0;
+        margin: 25px auto 0;
 
-    border: 2px solid #111;
-    border-radius: 50%;
+        border: 2px solid #111;
+        border-radius: 50%;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    font-size: 24px;
-
-    /* Geen interactie */
-    cursor: default;
-}
+        font-size: clamp(18px, 2vw, 24px);
+        cursor: default;
+    }
 
 
     /* ==================================================
@@ -96,12 +105,12 @@
        ================================================== */
 
     .question {
-        margin-top: 75px;
+        margin-top: clamp(40px, 6.2vw, 75px);
         text-align: center;
     }
 
     .question-text {
-        font-size: 24px;
+        font-size: clamp(18px, 2vw, 24px);
         line-height: 1.4;
         margin-bottom: 30px;
     }
@@ -165,12 +174,12 @@
     }
 
     .result-sentences {
-        margin-bottom: 65px;
+        margin-bottom: clamp(30px, 5vw, 60px);
     }
 
     .result-sentences .sentence {
         min-height: auto;
-        font-size: 25px;
+        font-size: clamp(18px, 2.1vw, 25px);
     }
 
 
@@ -183,11 +192,11 @@
 
     .interpretation {
         margin-bottom: 30px;
-        padding: 30px 35px;
+        padding: clamp(18px, 2.5vw, 30px) clamp(18px, 2.9vw, 35px);
 
         border-radius: 14px;
 
-        font-size: 24px;
+        font-size: clamp(18px, 2vw, 24px);
         line-height: 1.5;
 
         opacity: 0;
@@ -218,7 +227,7 @@
 
         margin-bottom: 12px;
 
-        font-size: 16px;
+        font-size: clamp(13px, 1.35vw, 16px);
         text-transform: uppercase;
         letter-spacing: 0.08em;
         font-weight: bold;
@@ -235,10 +244,10 @@
         align-items: center;
         justify-content: center;
 
-        width: 58px;
-        height: 58px;
+        width: clamp(44px, 4.8vw, 58px);
+        height: clamp(44px, 4.8vw, 58px);
 
-        margin: 55px auto 0;
+        margin: 25px auto 0;
 
         border: 2px solid #111;
         border-radius: 50%;
@@ -261,6 +270,67 @@
         transform: translateX(-5px);
     }
 
+
+    /* ==================================================
+       SMAL FRAME (tablet / smartphone)
+       De twee zinnen komen onder elkaar, tekst links uitgelijnd.
+       ================================================== */
+
+    @media (max-width: 760px) {
+
+        .sentences {
+            grid-template-columns: 1fr;
+            gap: 28px;
+        }
+
+        /* Cijfer komt achter de zin te staan, niet eronder */
+        .sentence-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .sentence {
+            flex: 1;
+            justify-content: flex-start;
+            min-height: 0;
+        }
+
+        .number-circle,
+        .result-sentences .number-circle {
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        .answer-button {
+            width: 72px;
+            height: 58px;
+        }
+
+        .back-button {
+            margin-top: 10px;
+        }
+    }
+
+
+    /* ==================================================
+       VEEL LAGER FRAME: niet meer krampachtig centreren
+       ================================================== */
+
+    @media (max-height: 700px) {
+        .container {
+            justify-content: flex-start;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .result-screen,
+        .interpretation {
+            animation-duration: 0.01s;
+            animation-delay: 0s;
+        }
+    }
+
 </style>
 </head>
 
@@ -278,36 +348,22 @@
         <div class="sentences">
 
             <div class="sentence-box">
-
                 <div class="sentence">
                     De Vlaamse regering heeft besloten voorlopig
                     geen verdere actie te ondernemen.
                 </div>
-
-                <div class="number-circle">
-                    1
-                </div>
-
+                <div class="number-circle">1</div>
             </div>
 
-
             <div class="sentence-box">
-
                 <div class="sentence">
                     De vakbonden gaan zelf praten met een
                     mogelijke overnemer.
                 </div>
-
-                <div class="number-circle">
-                    2
-                </div>
-
+                <div class="number-circle">2</div>
             </div>
 
         </div>
-
-
-        <!-- Vraag -->
 
         <div class="question">
 
@@ -316,19 +372,8 @@
             </div>
 
             <div class="answers">
-
-                <button
-                    class="answer-button"
-                    data-answer="1">
-                    1
-                </button>
-
-                <button
-                    class="answer-button"
-                    data-answer="2">
-                    2
-                </button>
-
+                <button class="answer-button" data-answer="1">1</button>
+                <button class="answer-button" data-answer="2">2</button>
             </div>
 
         </div>
@@ -342,78 +387,41 @@
 
     <section id="resultScreen" class="screen hidden">
 
-        <!-- Originele zinnen -->
-
         <div class="sentences result-sentences">
 
             <div class="sentence-box">
-
                 <div class="sentence">
                     De Vlaamse regering heeft besloten voorlopig
                     geen verdere actie te ondernemen.
                 </div>
-
-                <div class="number-circle">
-                    1
-                </div>
-
+                <div class="number-circle">1</div>
             </div>
 
-
             <div class="sentence-box">
-
                 <div class="sentence">
                     De vakbonden gaan zelf praten met een
                     mogelijke overnemer.
                 </div>
-
-                <div class="number-circle">
-                    2
-                </div>
-
+                <div class="number-circle">2</div>
             </div>
 
         </div>
-
-
-        <!-- Interpretaties -->
 
         <div class="interpretations">
 
-            <div
-                id="yourInterpretation"
-                class="interpretation your">
-
-                <span class="label">
-                    Jouw interpretatie:
-                </span>
-
+            <div id="yourInterpretation" class="interpretation your">
+                <span class="label">Jouw interpretatie:</span>
                 <span id="yourText"></span>
-
             </div>
 
-
             <div class="interpretation other">
-
-                <span class="label">
-                    Maar evenzeer mogelijk:
-                </span>
-
+                <span class="label">Maar evenzeer mogelijk:</span>
                 <span id="otherText"></span>
-
             </div>
 
         </div>
 
-
-        <!-- Terug -->
-
-        <button
-            id="backButton"
-            class="back-button"
-            aria-label="Terug">
-            ←
-        </button>
+        <button id="backButton" class="back-button" aria-label="Terug">←</button>
 
     </section>
 
@@ -432,89 +440,55 @@ const buttons = document.querySelectorAll(".answer-button");
 const backButton = document.getElementById("backButton");
 
 
-/*
-    Interpretatie wanneer de gebruiker voor 1 kiest
-*/
+// Interpretatie wanneer de gebruiker voor 1 kiest
 const interpretation1 = {
-
     your:
         "De Vlaamse regering heeft besloten voorlopig geen verdere actie te ondernemen en als reactie daarop gaan de vakbonden nu zelf praten met een mogelijke overnemer.",
-
     other:
         "De Vlaamse regering heeft besloten voorlopig geen verdere actie te ondernemen. De reden daarvoor is dat de vakbonden zelf gaan praten met een mogelijke overnemer."
 };
 
-
-/*
-    Interpretatie wanneer de gebruiker voor 2 kiest
-*/
+// Interpretatie wanneer de gebruiker voor 2 kiest
 const interpretation2 = {
-
     your:
         "De Vlaamse regering heeft besloten voorlopig geen verdere actie te ondernemen. De reden daarvoor is dat de vakbonden zelf gaan praten met een mogelijke overnemer.",
-
     other:
         "De Vlaamse regering heeft besloten voorlopig geen verdere actie te ondernemen en als reactie daarop gaan de vakbonden nu zelf praten met een mogelijke overnemer."
 };
 
 
-/*
-    Antwoord verwerken
-*/
+// Antwoord verwerken
 buttons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        const answer = button.dataset.answer;
-
-        let interpretation;
-
-        if (answer === "1") {
-            interpretation = interpretation1;
-        } else {
-            interpretation = interpretation2;
-        }
+        const interpretation =
+            button.dataset.answer === "1" ? interpretation1 : interpretation2;
 
         yourText.textContent = interpretation.your;
         otherText.textContent = interpretation.other;
 
-
-        // Beginfase verbergen
         startScreen.classList.add("hidden");
-
-        // Resultaatscherm tonen
         resultScreen.classList.remove("hidden");
 
         // Animatie opnieuw activeren
         resultScreen.classList.remove("result-screen");
-
         void resultScreen.offsetWidth;
-
         resultScreen.classList.add("result-screen");
 
-        // Scroll eventueel naar boven
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
 });
 
 
-/*
-    Terug naar de beginfase
-*/
+// Terug naar de beginfase
 backButton.addEventListener("click", () => {
 
     resultScreen.classList.add("hidden");
     startScreen.classList.remove("hidden");
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
 });
 
